@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use('/create-shipping-profile', async (req, res) => {
+app.post('/create-shipping-profile', async (req, res) => {
   console.log(req.body)
   try{
     const variables = await req.body.profile
@@ -49,3 +49,41 @@ app.use('/create-shipping-profile', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+
+/* {"profile": {
+  "name": "render created",
+  "locationGroupsToCreate": [
+    {
+      "locations": [
+        "gid://shopify/Location/76352618802"
+      ],
+      "zonesToCreate": [
+        {
+          "countries": [
+            {
+              "code": "MX",
+              "includeAllProvinces": true
+
+            }
+          ],
+          "methodDefinitionsToCreate": [
+            {
+              "active": true,
+              "description": "",
+              "name": "Creado desde render",
+              "rateDefinition": {
+                "price": {
+                  "amount": "999",
+                  "currencyCode": "MXN"
+                }
+              }
+            }
+          ],
+          "name": "admin"
+        }
+      ]
+    }
+  ]
+}
+} */
