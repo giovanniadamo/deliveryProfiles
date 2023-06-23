@@ -11,14 +11,12 @@ const shopify = new Shopify({
 const app = express();
 const port = 3000;
 
-app.use(express.json())
-
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', bodyParser.urlencoded({extended: false}), async (req, res) => {
-  console.log(req)
+app.post('/create-shipping-profile', bodyParser.json(), async (req, res) => {
+  console.log(req.body)
   try{
     const variables = await req.body.profile
     const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
