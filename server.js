@@ -11,11 +11,15 @@ const shopify = new Shopify({
 const app = express();
 const port = 3000;
 
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(bodyParser.json())
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', bodyParser.json(), async (req, res) => {
+app.use('/create-shipping-profile', async (req, res) => {
   console.log(req.body)
   try{
     const variables = await req.body.profile
