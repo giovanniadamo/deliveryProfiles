@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser');;
 const Shopify = require('shopify-api-node');
 
 const shopify = new Shopify({
@@ -11,14 +10,14 @@ const shopify = new Shopify({
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json())
+app.use(express.json())
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 app.post('/create-shipping-profile', async (req, res) => {
-  console.log(req)
+  console.log(req.body)
   const variables = await req.body.profile
   const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
     deliveryProfileCreate(profile: $profile) {
