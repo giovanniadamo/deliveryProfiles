@@ -9,11 +9,6 @@ const shopify = new Shopify({
   password: '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'
 });
 
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
 const app = express();
 const port = 3000;
 
@@ -25,10 +20,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', cors(corsOptions), async (req, res) => {
+app.use('/create-shipping-profile', cors(), async (req, res) => {
   console.log(req.body)
   try{
-    const variables = await req.body.profile
+    const variables = req.body.profiles
     const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
       deliveryProfileCreate(profile: $profile) {
         profile {
