@@ -20,10 +20,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.use('/create-shipping-profile', cors(), async (req, res) => {
+app.post('/create-shipping-profile', cors(), async (req, res) => {
   console.log(req.body)
+  console.log(req.body.profile.locationGroupsToCreate)
   try{
-    const variables = req.body.profiles
+    const variables = req.body.profile
     const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
       deliveryProfileCreate(profile: $profile) {
         profile {
@@ -38,14 +39,18 @@ app.use('/create-shipping-profile', cors(), async (req, res) => {
     }`;
     shopify
     .graphql(query, variables)
-    .then((customers) => {
-      console.log(customers)
-      res.send(customers)
-      })
-      .catch((err) => {
-        console.error(err)
-        res.send(customers)
-      });
+    .then((profile) => {
+      if(profile){
+        console.log(profile)
+        res.send(profile)
+      }else{
+        return
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.send(err)
+    });
   }catch(error){
     console.log(error)
     res.send(error)
