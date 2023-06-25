@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const express = require('express')
 const Shopify = require('shopify-api-node');
 
@@ -7,6 +8,11 @@ const shopify = new Shopify({
   apiKey: '50b5e45a359681bd2f85c820c1adb7dc',
   password: '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'
 });
+
+const corsOptions = {
+  origin: 'http://example.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 const app = express();
 const port = 3000;
@@ -19,7 +25,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', async (req, res) => {
+app.post('/create-shipping-profile', cors(corsOptions), async (req, res) => {
   console.log(req.body)
   try{
     const variables = await req.body.profile
