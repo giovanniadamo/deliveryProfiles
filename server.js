@@ -43,10 +43,17 @@ app.post('/create-shipping-profile', cors(corsOptions), async (req, res) => {
     }`;
     shopify
     .graphql(query, variables)
-    .then((customers) => console.log(customers))
-    .catch((err) => console.error(err));
+    .then((customers) => {
+      console.log(customers)
+      res.send(customers)
+      })
+      .catch((err) => {
+        console.error(err)
+        res.send(customers)
+      });
   }catch(error){
     console.log(error)
+    res.send(error)
   }
 
 });
