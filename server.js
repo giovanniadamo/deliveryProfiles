@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const express = require('express')
 const Shopify = require('shopify-api-node');
 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', async (req, res) => {
+app.post('/create-shipping-profile', cors(), async (req, res) => {
   console.log(req.body)
   console.log(req.body.profile.locationGroupsToCreate)
   try{
