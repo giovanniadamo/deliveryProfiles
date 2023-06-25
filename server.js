@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
 
 app.post('/create-shipping-profile', cors(), async (req, res) => {
   console.log(req.body)
-  console.log(req.body.profile.locationGroupsToCreate)
   try{
     const variables = req.body
     const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
