@@ -10,7 +10,7 @@ const shopify = new Shopify({
 });
 
 const corsOptions = {
-  origin: 'http://example.com',
+  origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
