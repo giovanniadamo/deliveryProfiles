@@ -24,7 +24,7 @@ app.post('/create-shipping-profile', cors(), async (req, res) => {
   console.log(req.body)
   console.log(req.body.profile.locationGroupsToCreate)
   try{
-    const variables = req.body.profile
+    const variables = await req.body.profile
     const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
       deliveryProfileCreate(profile: $profile) {
         profile {
@@ -37,7 +37,7 @@ app.post('/create-shipping-profile', cors(), async (req, res) => {
         }
       }
     }`;
-    shopify
+    await shopify
     .graphql(query, variables)
     .then((profile) => {
       if(profile){
