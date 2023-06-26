@@ -10,22 +10,22 @@ const shopify = new Shopify({
 });
 
 var corsOptions = {
-  origin: 'https://allnutrition.cl/',
+  origin: 'https://allnutrition.cl',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 const app = express();
 const port = 3000;
 
+app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
-
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/create-shipping-profile', cors(corsOptions), async (req, res) => {
+app.post('/create-shipping-profile', async (req, res) => {
   console.log(req.body)
   try{
     const variables = req.body
