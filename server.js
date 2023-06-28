@@ -32,7 +32,10 @@ app.post('/get-products', async (req, res) => {
   try{
     shopify.product
     .list([req.body])
-    .then(data => console.log(data))
+    .then(data => {
+      console.log(data)
+      res.send(data)
+    })
     .catch((err) => {
       console.error(err)
       res.send(err)
