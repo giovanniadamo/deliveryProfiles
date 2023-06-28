@@ -3,10 +3,12 @@ const cors = require('cors')
 const express = require('express')
 const Shopify = require('shopify-api-node');
 
+require('dotenv').config();
+
 const shopify = new Shopify({
-  shopName: 'atoms-apps-development',
-  apiKey: '50b5e45a359681bd2f85c820c1adb7dc',
-  password: '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'
+  shopName: process.env.SHOP_NAME,
+  apiKey: process.env.DELIVERY_API_KEY,
+  password: process.env.DELIVERY_APP_PASSWORD
 });
 
 var corsOptions = {
