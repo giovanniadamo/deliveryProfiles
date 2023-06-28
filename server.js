@@ -31,7 +31,12 @@ app.post('/get-products', async (req, res) => {
   console.log(req.body)
   try{
     shopify.product
-    .get(req.body)
+    .list([req.body])
+    .then(data => console.log(data))
+    .catch((err) => {
+      console.error(err)
+      res.send(err)
+    })
   }catch{
     console.log(error)
     res.send(error)
