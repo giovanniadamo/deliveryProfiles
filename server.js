@@ -10,7 +10,7 @@ const shopify = new Shopify({
 });
 
 var corsOptions = {
-  origin: 'https://allnutrition.cl',
+  origin: 'https://dev.allnutrition.cl/10074718271/checkouts/*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
