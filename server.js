@@ -27,6 +27,17 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.post('/get-products', async (req, res) => {
+  console.log(req.body)
+  try{
+    shopify.product
+    .get(req.body)
+  }catch{
+    console.log(error)
+    res.send(error)
+  }
+})
+
 app.post('/create-shipping-profile', async (req, res) => {
   console.log(req.body)
   try{
