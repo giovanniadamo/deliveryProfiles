@@ -31,7 +31,7 @@ app.post('/get-products', async (req, res) => {
   console.log(req.body)
   try{
     shopify.product
-    .list([req.body])
+    .list(req.body)
     .then(data => {
       console.log(data)
       res.send(data)
