@@ -29,9 +29,11 @@ app.get('/', (req, res) => {
 
 app.post('/get-products', async (req, res) => {
   console.log(req.body)
+  let id = req.body.id;
+  let fields = req.body.fields;
   try{
     shopify.productVariant
-    .get(req.body.product_id)
+    .get(id, fields)
     .then(data => {
       res.send(data)
     })
