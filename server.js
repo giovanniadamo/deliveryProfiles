@@ -33,7 +33,6 @@ app.post('/get-products', async (req, res) => {
     shopify.product
     .list(req.body)
     .then(data => {
-      console.log(data)
       res.send(data)
     })
     .catch((err) => {
