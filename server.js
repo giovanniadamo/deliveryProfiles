@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 app.post('/get-products', async (req, res) => {
   console.log(req.body)
   try{
-    shopify.product
+    shopify.productVariant
     .list(req.body)
     .then(data => {
       res.send(data)
