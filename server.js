@@ -31,7 +31,7 @@ app.post('/get-products', async (req, res) => {
   console.log(req.body)
   try{
     shopify.productVariant
-    .list(req.body)
+    .get(req.body)
     .then(data => {
       res.send(data)
     })
