@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const cors = require('cors')
-const express = require('express')
+const express = require('express');
+const { forEach } = require('lodash');
 const Shopify = require('shopify-api-node');
 
 require('dotenv').config();
@@ -29,18 +30,24 @@ app.get('/', (req, res) => {
 
 app.post('/get-products', async (req, res) => {
   console.log(req.body)
-  let id = req.body.id;
+  let ids = req.body.id;
   let fields = req.body.fields;
+  let gids = []
   try{
-    shopify.productVariant
-    .get(id, fields)
-    .then(data => {
-      res.send(data)
+    ids.forEach(id => {
+      shopify.productVariant
+      .get(id, fields)
+      .then(data => {
+        gids.push(data.admin_graphql_api_id)
+      })
+      .catch((err) => {
+        console.error(err)
+        res.send(err)
+      })
     })
-    .catch((err) => {
-      console.error(err)
-      res.send(err)
-    })
+    if(ids.lenght === gids.length){
+      res.send(gids)
+    }
   }catch{
     console.log(error)
     res.send(error)
