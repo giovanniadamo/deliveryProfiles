@@ -33,8 +33,8 @@ app.post('/get-products', async (req, res) => {
   let ids = req.body.id;
   let fields = req.body.fields;
   let gids = []
-  ids.forEach(id => {
-    try{
+  try{
+    ids.forEach(id => {
       shopify.productVariant
       .get(id, fields)
       .then(data => {
@@ -47,11 +47,11 @@ app.post('/get-products', async (req, res) => {
         console.error(err)
         res.send(err)
       })
-    }catch{
-      console.log(error)
-      res.send(error)
-    }
-  })
+    })
+  }catch{
+    console.log(error)
+    res.send(error)
+  }
 })
 
 app.post('/create-shipping-profile', async (req, res) => {
