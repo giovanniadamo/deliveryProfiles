@@ -33,25 +33,25 @@ app.post('/get-products', async (req, res) => {
   let ids = req.body.id;
   let fields = req.body.fields;
   let gids = []
-  try{
-    ids.forEach(id => {
+  ids.forEach(id => {
+    try{
       shopify.productVariant
       .get(id, fields)
       .then(data => {
         gids.push(data.admin_graphql_api_id)
+        if(ids.lenght === gids.length){
+          res.send(gids)
+        }
       })
       .catch((err) => {
         console.error(err)
         res.send(err)
       })
-    })
-    if(ids.lenght === gids.length){
-      res.send(gids)
+    }catch{
+      console.log(error)
+      res.send(error)
     }
-  }catch{
-    console.log(error)
-    res.send(error)
-  }
+  })
 })
 
 app.post('/create-shipping-profile', async (req, res) => {
