@@ -74,7 +74,7 @@ app.post('/get-profile-gids', async (req, res) => {
         }
         return
       })
-      res.send({profiles: deliveryProfilesToDelete})
+      res.send(deliveryProfilesToDelete)
     })
     .catch((err) => {
       console.error(err)
