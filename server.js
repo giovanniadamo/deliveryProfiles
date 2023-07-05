@@ -27,15 +27,49 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/get-products', async (req, res) => {
+app.post('/get-gids', async (req, res) => {
   console.log(req.body)
   let id = req.body.id;
   let fields = req.body.fields;
+  let time = req.body.time;
   try{
     shopify.productVariant
     .get(id, fields)
     .then(data => {
-      res.send(data)
+
+      let query = `
+      {
+        deliveryProfiles(first:100) {
+          edges{
+            node{
+              id
+              name
+            }
+          }
+        }
+      }
+      `
+      shopify
+      .graphql(query)
+      .then((profiles) => {
+        console.log(profiles)
+        let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
+          if(edge.node.name < time){
+            edge.node.id
+          }
+        })
+        let response = {
+          itemsGids: data,
+          deliveryProfilesGids: deliveryProfilesToDelete
+        }
+        res.send(response)
+      })
+      .catch((err) => {
+        console.error(err)
+        res.send(err)
+      });
+      /* res.send(data) */
+      
     })
     .catch((err) => {
       console.error(err)
