@@ -71,10 +71,11 @@ app.post('/get-profile-gids', async (req, res) => {
         let name = edge.node.name
         if(parseInt(name) < parseInt(time)){
           return edge.node.id
+        }else{
+          return name
         }
-        return
       })
-      res.send(deliveryProfilesToDelete)
+      res.send(deliveryProfilesToDelete.map(profile => profile.includes('gid')))
     })
     .catch((err) => {
       console.error(err)
