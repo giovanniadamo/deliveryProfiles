@@ -70,10 +70,11 @@ app.post('/get-profile-gids', async (req, res) => {
       let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
         let name = edge.node.name
         if(parseInt(name) < parseInt(time)){
-          edge.node.id
+          return edge.node.id
         }
+        return
       })
-      res.send({profiles: deliveryProfilesToDelete, plianProfiles: profiles})
+      res.send({profiles: deliveryProfilesToDelete})
     })
     .catch((err) => {
       console.error(err)
