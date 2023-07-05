@@ -27,17 +27,31 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/get-gids', async (req, res) => {
+app.post('/get-items-gids', async (req, res) => {
   console.log(req.body)
   let id = req.body.id;
   let fields = req.body.fields;
-  let time = req.body.time;
   try{
     shopify.productVariant
     .get(id, fields)
     .then(data => {
+      res.send(data)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.send(err)
+    })
+  }catch{
+    console.log(error)
+    res.send(error)
+  }
+})
 
-      let query = `
+app.post('/get-profile-gids', async (req, res) => {
+  console.log(req.body)
+  let time = req.body.time;
+  try{
+    let query = `
       {
         deliveryProfiles(first:100) {
           edges{
@@ -49,32 +63,22 @@ app.post('/get-gids', async (req, res) => {
         }
       }
       `
-      shopify
-      .graphql(query)
-      .then((profiles) => {
-        console.log(profiles)
-        let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
-          if(edge.node.name < time){
-            edge.node.id
-          }
-        })
-        let response = {
-          itemsGids: data,
-          deliveryProfilesGids: deliveryProfilesToDelete
+    shopify
+    .graphql(query)
+    .then((profiles) => {
+      console.log('profiles',profiles)
+      let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
+        let name = edge.node.name
+        if(parseInt(name) < parseInt(time)){
+          edge.node.id
         }
-        res.send(response)
       })
-      .catch((err) => {
-        console.error(err)
-        res.send(err)
-      });
-      /* res.send(data) */
-      
+      res.send({profiles: deliveryProfilesToDelete, plianProfiles: profiles})
     })
     .catch((err) => {
       console.error(err)
       res.send(err)
-    })
+    });
   }catch{
     console.log(error)
     res.send(error)
