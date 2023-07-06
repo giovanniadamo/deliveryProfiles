@@ -74,12 +74,14 @@ app.post('/get-profile-gids', async (req, res) => {
       let deliveryProfilesToDelete = []
       profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
         let profileDescription = edge.node.description
-        let destructuredDescription = profileDescription.split('-')
-        let givenDate = destructuredDescription[1].trim()
-        let isOlder = isDateMoreThanTwoDaysOlder(givenDate);
-        console.log(isOlder);
-        if(isOlder){
-          deliveryProfilesToDelete.push(edge.node.id)
+        if(profileDescription.includes('-')){
+          let destructuredDescription = profileDescription.split('-')
+          let givenDate = destructuredDescription[1].trim()
+          let isOlder = isDateMoreThanTwoDaysOlder(givenDate);
+          console.log(isOlder);
+          if(isOlder){
+            deliveryProfilesToDelete.push(edge.node.id)
+          }
         }
       })
       console.log('delete:', deliveryProfilesToDelete)
