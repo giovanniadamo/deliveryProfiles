@@ -89,16 +89,16 @@ app.post('/get-profile-gids', async (req, res) => {
     shopify
     .graphql(query)
     .then((profiles) => {
-      console.log('profiles',profiles)
-      /* let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
+      console.log('profiles:',profiles)
+      let deliveryProfilesToDelete = []
+      profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(edge => {
         let profileName = edge.node.name
-        if(profileName === newProfileName){
-          return edge.node.id
-        }else{
-          return name
+        if(newNames.includes(profileName)){
+          deliveryProfilesToDelete.push(edge.node.id)
         }
-      }) */
-      res.send(profiles)
+      })
+      console.log('delete:', deliveryProfilesToDelete)
+      res.send(deliveryProfilesToDelete)
     })
     .catch((err) => {
       console.error(err)
