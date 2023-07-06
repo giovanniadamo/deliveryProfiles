@@ -49,33 +49,56 @@ app.post('/get-items-gids', async (req, res) => {
 
 app.post('/get-profile-gids', async (req, res) => {
   console.log(req.body)
-  let time = req.body.time;
+  let newNames = req.body.names;
   try{
     let query = `
       {
-        deliveryProfiles(first:100) {
+        deliveryProfiles(first:10){
           edges{
             node{
               id
               name
+              profileLocationGroups{
+                locationGroup{
+                  id
+                }
+                locationGroupZones(first:5){
+                  edges{
+                    node{
+                      zone{
+                        id
+                        name
+                      }
+                      methodDefinitions(first:5){
+                        edges{
+                          node{
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
       }
-      `
+    `
     shopify
     .graphql(query)
     .then((profiles) => {
       console.log('profiles',profiles)
-      let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
-        let name = edge.node.name
-        if(parseInt(name) < parseInt(time)){
+      /* let deliveryProfilesToDelete = profiles.deliveryProfiles.edges.map(edge => {
+        let profileName = edge.node.name
+        if(profileName === newProfileName){
           return edge.node.id
         }else{
           return name
         }
-      })
-      res.send(deliveryProfilesToDelete)
+      }) */
+      res.send(profiles)
     })
     .catch((err) => {
       console.error(err)
@@ -91,7 +114,25 @@ app.post('/create-shipping-profile', async (req, res) => {
   console.log(req.body)
   try{
     const variables = req.body
-    const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
+    const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!) {
+      deliveryProfileUpdate(id: $id, profile: $profile) {
+        profile {
+          zoneCountryCount
+          name
+          id
+          profileLocationGroups{
+            locationGroup{
+              id
+            }
+          }
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`
+    /* const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
       deliveryProfileCreate(profile: $profile) {
         profile {
           zoneCountryCount
@@ -102,7 +143,7 @@ app.post('/create-shipping-profile', async (req, res) => {
           message
         }
       }
-    }`;
+    }`; */
     shopify
     .graphql(query, variables)
     .then((profile) => {
@@ -129,40 +170,3 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
-
-/* {"profile": {
-  "name": "render created",
-  "locationGroupsToCreate": [
-    {
-      "locations": [
-        "gid://shopify/Location/76352618802"
-      ],
-      "zonesToCreate": [
-        {
-          "countries": [
-            {
-              "code": "MX",
-              "includeAllProvinces": true
-
-            }
-          ],
-          "methodDefinitionsToCreate": [
-            {
-              "active": true,
-              "description": "",
-              "name": "Creado desde render",
-              "rateDefinition": {
-                "price": {
-                  "amount": "999",
-                  "currencyCode": "MXN"
-                }
-              }
-            }
-          ],
-          "name": "admin"
-        }
-      ]
-    }
-  ]
-}
-} */
