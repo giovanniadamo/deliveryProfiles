@@ -27,29 +27,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/get-items-gids', async (req, res) => {
-  console.log(req.body)
-  let id = req.body.id;
-  let fields = req.body.fields;
-  try{
-    shopify.productVariant
-    .get(id, fields)
-    .then(data => {
-      res.send(data)
-    })
-    .catch((err) => {
-      console.error(err)
-      res.send(err)
-    })
-  }catch{
-    console.log(error)
-    res.send(error)
-  }
-})
-
 app.post('/get-profile-gids', async (req, res) => {
   console.log(req.body)
-  let newNames = req.body.names;
+  let date = req.body.date;
   try{
     let query = `
       {
@@ -74,6 +54,7 @@ app.post('/get-profile-gids', async (req, res) => {
                           node{
                             id
                             name
+                            description
                           }
                         }
                       }
@@ -91,9 +72,13 @@ app.post('/get-profile-gids', async (req, res) => {
     .then((profiles) => {
       console.log('profiles:',profiles)
       let deliveryProfilesToDelete = []
-      profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(edge => {
-        let profileName = edge.node.name
-        if(newNames.includes(profileName)){
+      profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
+        let profileDescription = edge.node.description
+        let destructuredDescription = profileDescription.split('-')
+        let givenDate = destructuredDescription[1].trim()
+        let isOlder = isDateMoreThanTwoDaysOlder(givenDate);
+        console.log(isOlder);
+        if(isOlder){
           deliveryProfilesToDelete.push(edge.node.id)
         }
       })
@@ -108,6 +93,29 @@ app.post('/get-profile-gids', async (req, res) => {
     console.log(error)
     res.send(error)
   }
+
+  const isDateMoreThanTwoDaysOlder = async (givenDate) => {
+
+    let today = new Date();
+
+    let givenDateParts = givenDate.split("/");
+    let givenDay = parseInt(givenDateParts[0], 10);
+    let givenMonth = parseInt(givenDateParts[1], 10) - 1;
+    let givenYear = parseInt(givenDateParts[2], 10);
+  
+    let parsedGivenDate = new Date(givenYear, givenMonth, givenDay);
+  
+    let timeDifference = today - parsedGivenDate;
+    
+    let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  
+    if (daysDifference >= 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 })
 
 app.post('/create-shipping-profile', async (req, res) => {
@@ -132,18 +140,6 @@ app.post('/create-shipping-profile', async (req, res) => {
         }
       }
     }`
-    /* const query = `mutation deliveryProfileCreate($profile: DeliveryProfileInput!) {
-      deliveryProfileCreate(profile: $profile) {
-        profile {
-          zoneCountryCount
-          name
-        }
-        userErrors {
-          field
-          message
-        }
-      }
-    }`; */
     shopify
     .graphql(query, variables)
     .then((profile) => {
