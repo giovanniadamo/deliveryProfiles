@@ -32,7 +32,7 @@ app.post('/get-profile-gids', async (req, res) => {
   try{
     let query = `
       {
-        deliveryProfiles(first:10){
+        deliveryProfiles(first:1){
           edges{
             node{
               id
@@ -41,14 +41,14 @@ app.post('/get-profile-gids', async (req, res) => {
                 locationGroup{
                   id
                 }
-                locationGroupZones(first:5){
+                locationGroupZones(first:1){
                   edges{
                     node{
                       zone{
                         id
                         name
                       }
-                      methodDefinitions(first:5){
+                      methodDefinitions(first:10){
                         edges{
                           node{
                             id
@@ -124,7 +124,7 @@ app.post('/get-profile-gids', async (req, res) => {
 })
 
 app.post('/create-shipping-profile', async (req, res) => {
-  console.log(req.body)
+  console.log('/create-shipping-profile', req.body)
   try{
     const variables = req.body
     const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!) {
@@ -134,8 +134,20 @@ app.post('/create-shipping-profile', async (req, res) => {
           name
           id
           profileLocationGroups{
-            locationGroup{
-              id
+            locationGroupZones(first:1){
+                edges{
+                  node{
+                    methodDefinitions(first: 1 reverse:true){
+                      edges{
+                        node{
+                          id
+                          name
+                          description
+                        }
+                      }
+                    }
+                  }
+                }
             }
           }
         }
