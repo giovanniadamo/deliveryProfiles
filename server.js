@@ -48,7 +48,7 @@ app.post('/get-profile-gids', async (req, res) => {
                         id
                         name
                       }
-                      methodDefinitions(first:10){
+                      methodDefinitions(first:30){
                         edges{
                           node{
                             id
@@ -71,7 +71,7 @@ app.post('/get-profile-gids', async (req, res) => {
     .then(async (profiles) => {
       console.log('profiles:',profiles)
       let deliveryProfilesToDelete = []
-      console.log('length', profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges)
+      console.log('length', profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.length)
       await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
         let profileDescription = edge.node.description
 
