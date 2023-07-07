@@ -68,10 +68,11 @@ app.post('/get-profile-gids', async (req, res) => {
     `
     shopify
     .graphql(query)
-    .then((profiles) => {
+    .then(async (profiles) => {
       console.log('profiles:',profiles)
       let deliveryProfilesToDelete = []
-      profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
+      console.log('length', profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges)
+      await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
         let profileDescription = edge.node.description
 
         if(profileDescription && profileDescription.includes('-')){
@@ -79,7 +80,7 @@ app.post('/get-profile-gids', async (req, res) => {
           let givenDate = destructuredDescription[1].trim()
           console.log(givenDate)
           let isOlder = await isDateMoreThanTwoDaysOlder(givenDate);
-          console.log(isOlder);
+          console.log('older?',isOlder);
 
           if(isOlder){
             deliveryProfilesToDelete.push(edge.node.id)
