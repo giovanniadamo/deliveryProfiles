@@ -114,7 +114,7 @@ app.post('/get-profile-gids', async (req, res) => {
     
     let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   
-    if (daysDifference >= 0) {
+    if (daysDifference >= 1) {
       return true;
     } else {
       return false;
