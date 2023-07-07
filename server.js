@@ -29,7 +29,6 @@ app.get('/', (req, res) => {
 
 app.post('/get-profile-gids', async (req, res) => {
   console.log(req.body)
-  let date = req.body.date;
   try{
     let query = `
       {
@@ -74,12 +73,14 @@ app.post('/get-profile-gids', async (req, res) => {
       let deliveryProfilesToDelete = []
       profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
         let profileDescription = edge.node.description
+
         if(profileDescription && profileDescription.includes('-')){
           let destructuredDescription = profileDescription.split('-')
           let givenDate = destructuredDescription[1].trim()
           console.log(givenDate)
           let isOlder = await isDateMoreThanTwoDaysOlder(givenDate);
           console.log(isOlder);
+
           if(isOlder){
             deliveryProfilesToDelete.push(edge.node.id)
           }
@@ -112,7 +113,7 @@ app.post('/get-profile-gids', async (req, res) => {
     
     let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   
-    if (daysDifference >= 2) {
+    if (daysDifference >= 0) {
       return true;
     } else {
       return false;
