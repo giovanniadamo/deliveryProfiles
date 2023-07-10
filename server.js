@@ -137,7 +137,7 @@ app.post('/create-shipping-profile', async (req, res) => {
             locationGroupZones(first:1){
                 edges{
                   node{
-                    methodDefinitions(first: 1 reverse:true){
+                    methodDefinitions(first: 5 reverse:true){
                       edges{
                         node{
                           id
