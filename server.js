@@ -162,7 +162,8 @@ app.post('/create-shipping-profile', async (req, res) => {
     .then((profile) => {
       if(profile){
         console.log(profile)
-        res.send(profile)
+        let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.map(edge => edge.node)
+        res.send(generalProfileShippingMethods)
       }else{
         return
       }
