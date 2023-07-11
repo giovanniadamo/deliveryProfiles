@@ -48,7 +48,7 @@ app.post('/get-profile-gids', async (req, res) => {
                         id
                         name
                       }
-                      methodDefinitions(first:30){
+                      methodDefinitions(first:100){
                         edges{
                           node{
                             id
@@ -83,6 +83,8 @@ app.post('/get-profile-gids', async (req, res) => {
           console.log('older?',isOlder);
 
           if(isOlder){
+            deliveryProfilesToDelete.push(edge.node.id)
+          }else{
             deliveryProfilesToDelete.push(edge.node.id)
           }
         }
@@ -137,7 +139,7 @@ app.post('/create-shipping-method', async (req, res) => {
             locationGroupZones(first:1){
               edges{
                 node{
-                  methodDefinitions(first: 5 reverse:true){
+                  methodDefinitions(first: 10 reverse:true){
                     edges{
                       node{
                         id
