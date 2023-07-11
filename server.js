@@ -161,7 +161,7 @@ app.post('/create-shipping-method', async (req, res) => {
     .graphql(query, variables)
     .then((profile) => {
       console.log(profile)
-      if(profile.deliveryProfileUpdate.userErrors.length > 0){
+      if(profile.deliveryProfileUpdate.userErrors.length === 0){
         let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.map(edge => edge.node)
         res.send(generalProfileShippingMethods)
       }else{
