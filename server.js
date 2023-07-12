@@ -48,7 +48,7 @@ app.post('/get-profile-gids', async (req, res) => {
                         id
                         name
                       }
-                      methodDefinitions(first:100){
+                      methodDefinitions(first:30){
                         edges{
                           node{
                             id
@@ -79,7 +79,7 @@ app.post('/get-profile-gids', async (req, res) => {
           let destructuredDescription = profileDescription.split('-')
           let givenDate = destructuredDescription[1].trim()
           console.log(givenDate)
-          let isOlder = await isDateMoreThanTwoDaysOlder(givenDate);
+          let isOlder = await minuteDifference(givenDate);
           console.log('older?',isOlder);
 
           if(isOlder){
@@ -99,26 +99,29 @@ app.post('/get-profile-gids', async (req, res) => {
     res.send(error)
   }
 
-  const isDateMoreThanTwoDaysOlder = async (givenDate) => {
-
-    let today = new Date();
+  const minuteDifference = async (givenDate) => {
+    let currentDate = new Date();
 
     let givenDateParts = givenDate.split("/");
-    let givenDay = parseInt(givenDateParts[0], 10);
-    let givenMonth = parseInt(givenDateParts[1], 10) - 1;
-    let givenYear = parseInt(givenDateParts[2], 10);
-  
-    let parsedGivenDate = new Date(givenYear, givenMonth, givenDay);
-  
-    let timeDifference = today - parsedGivenDate;
-    
-    let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  
-    if (daysDifference >= 1) {
-      return true;
-    } else {
+    let givenYear = parseInt(givenDateParts[0], 10);
+    let givenMonth = parseInt(givenDateParts[1], 10) - 1; 
+    let givenDay = parseInt(givenDateParts[2], 10);
+    let givenTime = givenDateParts[3].split(':')
+    let givenHour = parseInt(givenTime[0], 10);
+    let givenMinute = parseInt(givenTime[1], 10);
+    let givenSecond = parseInt(givenTime[2], 10);
+    console.log('Time:',givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond)
+
+    let parsedGivenDate = new Date(givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond);
+    let timeDifference = currentDate - parsedGivenDate;
+    let hoursDifference = Math.floor(timeDifference / (1000 * 60));
+    console.log('isBigger', hoursDifference)
+
+    if(hoursDifference > 10){
+      return true 
+    }else{
       return false;
-    }
+    }  
   }
 
 })
