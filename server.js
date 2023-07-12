@@ -79,12 +79,12 @@ app.post('/get-profile-gids', async (req, res) => {
           let destructuredDescription = profileDescription.split('-')
           let givenDate = destructuredDescription[1].trim()
           console.log(givenDate)
-          let isOlder = await minuteDifference(givenDate);
+          /* let isOlder = await minuteDifference(givenDate);
           console.log('older?',isOlder);
 
           if(isOlder){
-            deliveryProfilesToDelete.push(edge.node.id)
-          }
+          } */
+          deliveryProfilesToDelete.push(edge.node.id)
         }
       })
       console.log('delete:', deliveryProfilesToDelete)
