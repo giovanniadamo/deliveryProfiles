@@ -100,13 +100,19 @@ app.post('/get-profile-gids', async (req, res) => {
     let currentDate = new Date();
 
     let givenDateParts = givenDate.split("/");
+    console.log(givenDateParts)
     let givenYear = parseInt(givenDateParts[0], 10);
     let givenMonth = parseInt(givenDateParts[1], 10) - 1; 
     let givenDay = parseInt(givenDateParts[2], 10);
     let givenTime = givenDateParts[3]?.split(':')
-    let givenHour = parseInt(givenTime[0], 10);
-    let givenMinute = parseInt(givenTime[1], 10);
-    let givenSecond = parseInt(givenTime[2], 10);
+    let givenHour
+    let givenMinute
+    let givenSecond
+    if(givenTime.length > 0){
+      givenHour = parseInt(givenTime[0], 10);
+      givenMinute = parseInt(givenTime[1], 10);
+      givenSecond = parseInt(givenTime[2], 10);
+    }
     console.log('Time:',givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond)
 
     let parsedGivenDate = new Date(givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond);
