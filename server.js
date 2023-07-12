@@ -76,7 +76,7 @@ app.post('/get-profile-gids', async (req, res) => {
 
         if(profileDescription && profileDescription.includes('-')){
           let destructuredDescription = profileDescription.split('-')
-          let givenDate = destructuredDescription[1].trim()
+          let givenDate = destructuredDescription[2].trim()
           let isOlder = await minuteDifference(givenDate);
 
           if(isOlder){
@@ -99,21 +99,14 @@ app.post('/get-profile-gids', async (req, res) => {
   const minuteDifference = async (givenDate) => {
     let currentDate = new Date();
 
-    console.log('date',givenDate)
     let givenDateParts = givenDate.split("/");
-    console.log('parts',givenDateParts)
     let givenYear = parseInt(givenDateParts[0], 10);
     let givenMonth = parseInt(givenDateParts[1], 10) - 1; 
     let givenDay = parseInt(givenDateParts[2], 10);
-    let givenTime = givenDateParts[3]?.split(':')
-    let givenHour
-    let givenMinute
-    let givenSecond
-    if(givenTime.length > 0){
-      givenHour = parseInt(givenTime[0], 10);
-      givenMinute = parseInt(givenTime[1], 10);
-      givenSecond = parseInt(givenTime[2], 10);
-    }
+    let givenTime = givenDateParts[3].split(':')
+    let givenHour = parseInt(givenTime[0], 10);
+    let givenMinute = parseInt(givenTime[1], 10);
+    let givenSecond = parseInt(givenTime[2], 10);
     console.log('Time:',givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond)
 
     let parsedGivenDate = new Date(givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond);
