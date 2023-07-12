@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/get-profile-gids', async (req, res) => {
-  console.log(req.body)
+  console.log('/get-profile-gids')
   try{
     let query = `
       {
@@ -71,20 +71,17 @@ app.post('/get-profile-gids', async (req, res) => {
     .then(async (profiles) => {
       console.log('profiles:',profiles)
       let deliveryProfilesToDelete = []
-      console.log('length', profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.length)
       await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => {
         let profileDescription = edge.node.description
 
         if(profileDescription && profileDescription.includes('-')){
           let destructuredDescription = profileDescription.split('-')
           let givenDate = destructuredDescription[1].trim()
-          console.log(givenDate)
-          /* let isOlder = await minuteDifference(givenDate);
-          console.log('older?',isOlder);
+          let isOlder = await minuteDifference(givenDate);
 
           if(isOlder){
-          } */
-          deliveryProfilesToDelete.push(edge.node.id)
+            deliveryProfilesToDelete.push(edge.node.id)
+          }
         }
       })
       console.log('delete:', deliveryProfilesToDelete)
