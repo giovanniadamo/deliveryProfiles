@@ -84,8 +84,6 @@ app.post('/get-profile-gids', async (req, res) => {
 
           if(isOlder){
             deliveryProfilesToDelete.push(edge.node.id)
-          }else{
-            deliveryProfilesToDelete.push(edge.node.id)
           }
         }
       })
