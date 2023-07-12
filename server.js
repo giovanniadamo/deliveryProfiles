@@ -99,8 +99,9 @@ app.post('/get-profile-gids', async (req, res) => {
   const minuteDifference = async (givenDate) => {
     let currentDate = new Date();
 
+    console.log('date',givenDate)
     let givenDateParts = givenDate.split("/");
-    console.log(givenDateParts)
+    console.log('parts',givenDateParts)
     let givenYear = parseInt(givenDateParts[0], 10);
     let givenMonth = parseInt(givenDateParts[1], 10) - 1; 
     let givenDay = parseInt(givenDateParts[2], 10);
