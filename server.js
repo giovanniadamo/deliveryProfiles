@@ -12,7 +12,7 @@ const shopify = new Shopify({
 });
 
 var corsOptions = {
-  origin: '*',
+  origin: ['https://dev.allnutrition.cl', '*'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
+  console.log('hola')
   res.send('Hello World!');
 });
 
@@ -183,4 +184,3 @@ const server = app.listen(port, '127.0.0.1', () => {
   const { address } = server.address();
   console.log(`Server listening on port ${port} ${address}`);
 });
-
