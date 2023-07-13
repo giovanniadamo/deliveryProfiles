@@ -180,7 +180,7 @@ app.post('/create-shipping-method', async (req, res) => {
 
 
 const server = app.listen(port, '127.0.0.1', () => {
-  const { address, port2 } = server.address();
-  console.log(`Server listening on port ${port2} ${address}`);
+  const { address } = server.address();
+  console.log(`Server listening on port ${port} ${address}`);
 });
 
