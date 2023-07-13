@@ -23,12 +23,12 @@ app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/shipping-rates/', (req, res) => {
+app.get('/', (req, res) => {
   console.log('hola')
   res.send('Hello World!');
 });
 
-app.post('/shipping-rates/get-profile-gids', async (req, res) => {
+app.post('/get-profile-gids', async (req, res) => {
   console.log('/get-profile-gids')
   try{
     let query = `
@@ -89,7 +89,7 @@ app.post('/shipping-rates/get-profile-gids', async (req, res) => {
       res.send(deliveryProfilesToDelete)
     })
     .catch((err) => {
-      console.log(err)
+      console.error(err)
       res.send(err)
     });
   }catch{
