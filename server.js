@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/get-profile-gids', async (req, res) => {
+app.post('/shipping-rates/get-profile-gids', async (req, res) => {
   console.log('/get-profile-gids')
   try{
     let query = `
