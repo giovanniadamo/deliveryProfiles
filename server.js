@@ -23,7 +23,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
+app.get('/shipping-rates/', (req, res) => {
   console.log('hola')
   res.send('Hello World!');
 });
@@ -89,7 +89,7 @@ app.post('/shipping-rates/get-profile-gids', async (req, res) => {
       res.send(deliveryProfilesToDelete)
     })
     .catch((err) => {
-      console.error(err)
+      console.log(err)
       res.send(err)
     });
   }catch{
