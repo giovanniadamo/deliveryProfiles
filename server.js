@@ -107,12 +107,10 @@ app.post('/get-profile-gids', async (req, res) => {
     let givenHour = parseInt(givenTime[0], 10);
     let givenMinute = parseInt(givenTime[1], 10);
     let givenSecond = parseInt(givenTime[2], 10);
-    console.log('Time:',givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond)
 
     let parsedGivenDate = new Date(givenYear, givenMonth, givenDay, givenHour, givenMinute, givenSecond);
     let timeDifference = currentDate - parsedGivenDate;
     let hoursDifference = Math.floor(timeDifference / (1000 * 60));
-    console.log('isBigger', hoursDifference)
 
     if(hoursDifference > 10){
       return true 

@@ -1,5 +1,7 @@
 # Node template
 
+*.pem
+
 # Logs
 logs
 *.log
@@ -57,7 +59,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+
 
 # IDE
 .idea/*
