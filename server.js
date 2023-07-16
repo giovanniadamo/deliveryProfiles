@@ -89,7 +89,7 @@ app.post('/get-profile-gids', async (req, res) => {
       res.send(deliveryProfilesToDelete)
     })
     .catch((err) => {
-      console.error(err)
+      console.log(err)
       res.send(err)
     });
   }catch{
@@ -124,6 +124,63 @@ app.post('/get-profile-gids', async (req, res) => {
 
 app.post('/create-shipping-method', async (req, res) => {
   console.log('/create-shipping-profile', req.body)
+  try{
+    const variables = req.body
+    const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!){
+      deliveryProfileUpdate(id: $id, profile: $profile){
+        profile{
+          zoneCountryCount
+          name
+          id
+          profileLocationGroups{
+            locationGroupZones(first:1){
+              edges{
+                node{
+                  methodDefinitions(first: 10 reverse:true){
+                    edges{
+                      node{
+                        id
+                        name
+                        description
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`
+    shopify
+    .graphql(query, variables)
+    .then((profile) => {
+      console.log(profile)
+      if(profile.deliveryProfileUpdate.userErrors.length === 0){
+        let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.map(edge => edge.node)
+        res.send(generalProfileShippingMethods)
+      }else{
+        res.send(profile)
+        return
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.send(err)
+    });
+  }catch(error){
+    console.log(error)
+    res.send(error)
+  }
+
+});
+
+app.post('/delete-shipping-method', async (req, res) => {
+  console.log('/delete-shipping-method', req.body)
   try{
     const variables = req.body
     const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!){
