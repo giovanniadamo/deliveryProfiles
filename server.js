@@ -237,7 +237,8 @@ app.post('/delete-shipping-method', async (req, res) => {
 });
 
 
-const server = app.listen(port, '127.0.0.1', () => {
+app.listen(port, () => {
   const { address } = server.address();
-  console.log(`Server listening on port ${port} ${address}`);
+  console.log(address)
+  console.log(`Server listening on port ${port}`);
 });
