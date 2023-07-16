@@ -113,7 +113,7 @@ app.post('/get-profile-gids', async (req, res) => {
     let timeDifference = currentDate - parsedGivenDate;
     let hoursDifference = Math.floor(timeDifference / (1000 * 60));
 
-    if(hoursDifference > 10){
+    if(hoursDifference > 4){
       return true 
     }else{
       return false;
