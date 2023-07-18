@@ -28,8 +28,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/get-profile-gids', async (req, res) => {
+app.post('/get-gids', async (req, res) => {
   console.log('/get-profile-gids')
+  /* Send in the body:
+    provience code
+  */
   try{
     let query = `
       {
@@ -87,6 +90,107 @@ app.post('/get-profile-gids', async (req, res) => {
       })
       console.log('delete:', deliveryProfilesToDelete)
       res.send(deliveryProfilesToDelete)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.send(err)
+    });
+  }catch{
+    console.log(error)
+    res.send(error)
+  }
+})
+
+app.post('/get-profile-gids', async (req, res) => {
+  console.log('/get-profile-gids')
+  try{
+    let query = `
+      {
+        deliveryProfiles(first:1){
+          edges{
+            node{
+              id
+              name
+              profileLocationGroups{
+                locationGroup{
+                  id
+                }
+                locationGroupZones(first:1){
+                  edges{
+                    node{
+                      zone{
+                        id
+                        name
+                        countries {
+                          provinces {
+                            code
+                            id
+                            name
+                            translatedName
+                          }
+                        }
+                      }
+                      methodDefinitions(first:30){
+                        edges{
+                          node{
+                            id
+                            name
+                            description
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+    shopify
+    .graphql(query)
+    .then(async (profiles) => {
+      console.log('profiles:',profiles)
+      let gids = {
+        groupZone,
+        methodsToDelete: [],
+        provienceId,
+        provienceCode,
+      }
+
+      /* await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => { */
+      await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges.forEach(groupZone => {
+
+        let id = groupZone.node.zone.id
+        let provienceId = groupZone.node.zone.countries[0].provinces[0].id
+        let provienceCode = groupZone.node.zone.countries[0].provinces[0].code
+        if(body.req.provienceCode === provienceCode){
+          gids.groupZone = id
+          gids.provienceCode = provienceCode
+          gids.provienceId = provienceId
+        }
+
+        groupZone.node.methodDefinitions.edges.forEach(async (edge) => {
+          let profileDescription = edge.node.description
+  
+          if(profileDescription && profileDescription.includes('-')){
+            let destructuredDescription = profileDescription.split('-')
+            let givenDate = destructuredDescription[2].trim()
+            let isOlder = await minuteDifference(givenDate);
+  
+            if(isOlder){
+              gids.methodsToDelete.push(edge.node.id)
+            }
+          }
+        })
+
+        return 
+      })
+      
+      
+      console.log('delete:', gids.methodsToDelete)
+      res.send(gids)
     })
     .catch((err) => {
       console.log(err)
