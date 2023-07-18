@@ -154,10 +154,10 @@ app.post('/get-profile-gids', async (req, res) => {
     .then(async (profiles) => {
       console.log('profiles:',profiles)
       let gids = {
-        groupZone,
+        groupZone : '',
         methodsToDelete: [],
-        provienceId,
-        provienceCode,
+        provienceId : '',
+        provienceCode : '',
         deliveryProfileId: profiles.deliveryProfiles.edges[0].node.id,
         locationGroupId: profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroup.id
       }
