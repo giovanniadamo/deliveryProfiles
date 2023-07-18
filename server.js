@@ -17,7 +17,7 @@ var corsOptions = {
 }
 
 const app = express();
-const port = 443;
+const port = 80;
 
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
