@@ -103,6 +103,7 @@ app.post('/get-gids', async (req, res) => {
 
 app.post('/get-profile-gids', async (req, res) => {
   console.log('/get-profile-gids')
+  console.log(req.body)
   try{
     let query = `
       {
@@ -167,7 +168,7 @@ app.post('/get-profile-gids', async (req, res) => {
         let id = groupZone.node.zone.id
         let provienceId = groupZone.node.zone.countries[0].provinces[0].id
         let provienceCode = groupZone.node.zone.countries[0].provinces[0].code
-        if(body.req.provienceCode === provienceCode){
+        if(req.body.provienceCode === provienceCode){
           gids.groupZone = id
           gids.provienceCode = provienceCode
           gids.provienceId = provienceId
@@ -192,6 +193,7 @@ app.post('/get-profile-gids', async (req, res) => {
       
       
       console.log('delete:', gids.methodsToDelete)
+      console.log('gids:', gids)
       res.send(gids)
     })
     .catch((err) => {
