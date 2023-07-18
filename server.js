@@ -157,6 +157,8 @@ app.post('/get-profile-gids', async (req, res) => {
         methodsToDelete: [],
         provienceId,
         provienceCode,
+        deliveryProfileId: profiles.deliveryProfiles.edges[0].node.id,
+        locationGroupId: profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroup.id
       }
 
       /* await profiles.deliveryProfiles.edges[0].node.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.forEach(async (edge) => { */
