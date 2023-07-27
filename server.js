@@ -30,7 +30,7 @@ app.get('/.well-known/pki-validation/EE68CD2D5671A412396D170983B45E85.txt', (req
   res.sendFile('/root/shippingRates/deliveryProfiles/EE68CD2D5671A412396D170983B45E85.txt')
 })
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   console.log('hola')
   res.send('Hello World!');
 });
