@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/.well-known/pki-validation/1F3CF813A0705AD831D96B21226847D7.txt', (req, res) => {
-  res.sendFile('./1F3CF813A0705AD831D96B21226847D7.txt')
+  res.sendFile('/root/shippingRates/deliveryProfiles/1F3CF813A0705AD831D96B21226847D7.txt')
 })
 
 app.get('/', (req, res) => {
