@@ -33,7 +33,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   console.log('hola')
   res.send('Hello World!');
 });
