@@ -178,6 +178,7 @@ app.post('/get-profile-gids', async (req, res) => {
         let id = groupZone.node.zone.id
         let provienceId = groupZone.node.zone.countries[0].provinces[0].id
         let provienceCode = groupZone.node.zone.countries[0].provinces[0].code
+        console.log('Req code',req.body.provienceCode)
         console.log('Code of definition',provienceCode)
         if(req.body.provienceCode === provienceCode){
           gids.groupZone = id
