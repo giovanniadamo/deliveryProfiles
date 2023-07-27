@@ -2,9 +2,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const express = require('express')
 const fs = require('fs')
+const https = require('https')
 const Shopify = require('shopify-api-node');
 
-const file = fs.readFileSync('./329346652BFE46E8882FB32ABB43FCBB.txt')
+const key = fs.readFileSync('private.key')
+const cert = fs.readFileSync('certificate.crt')
+
+const cred = {
+  key,
+  cert
+}
 
 require('dotenv').config();
 
@@ -26,11 +33,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/.well-known/pki-validation/329346652BFE46E8882FB32ABB43FCBB.txt', (req, res) => {
-  res.sendFile('/root/shippingRates/deliveryProfiles/329346652BFE46E8882FB32ABB43FCBB.txt')
-})
-
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   console.log('hola')
   res.send('Hello World!');
 });
@@ -356,3 +359,6 @@ app.post('/delete-shipping-method', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+const httpsServer = https.createServer(cred, app)
+httpsServer.listen(8443)
