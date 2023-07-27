@@ -1,7 +1,10 @@
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const express = require('express')
+const fs = requer('fs')
 const Shopify = require('shopify-api-node');
+
+const file = fs.readFileSync('./1F3CF813A0705AD831D96B21226847D7.txt')
 
 require('dotenv').config();
 
@@ -22,6 +25,10 @@ const port = 80;
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+app.get('/.well-known/pki-validation/1F3CF813A0705AD831D96B21226847D7.txt', (req, res) => {
+  res.sendFile('./1F3CF813A0705AD831D96B21226847D7.txt')
+})
 
 app.get('/', (req, res) => {
   console.log('hola')
@@ -116,7 +123,7 @@ app.post('/get-profile-gids', async (req, res) => {
                 locationGroup{
                   id
                 }
-                locationGroupZones(first:1){
+                locationGroupZones(first:16){
                   edges{
                     node{
                       zone{
@@ -168,6 +175,7 @@ app.post('/get-profile-gids', async (req, res) => {
         let id = groupZone.node.zone.id
         let provienceId = groupZone.node.zone.countries[0].provinces[0].id
         let provienceCode = groupZone.node.zone.countries[0].provinces[0].code
+        console.log('Code of definition',provienceCode)
         if(req.body.provienceCode === provienceCode){
           gids.groupZone = id
           gids.provienceCode = provienceCode
@@ -234,6 +242,7 @@ app.post('/create-shipping-method', async (req, res) => {
   console.log('/create-shipping-profile', req.body)
   try{
     const variables = req.body
+    
     const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!){
       deliveryProfileUpdate(id: $id, profile: $profile){
         profile{
