@@ -4,7 +4,7 @@ const express = require('express')
 const fs = require('fs')
 const Shopify = require('shopify-api-node');
 
-const file = fs.readFileSync('./8A762E919BBB5B9871DDB0BE45A6415D.txt')
+const file = fs.readFileSync('./EE68CD2D5671A412396D170983B45E85.txt')
 
 require('dotenv').config();
 
@@ -26,8 +26,8 @@ app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/.well-known/pki-validation/8A762E919BBB5B9871DDB0BE45A6415D.txt', (req, res) => {
-  res.sendFile('/root/shippingRates/deliveryProfiles/8A762E919BBB5B9871DDB0BE45A6415D.txt')
+app.get('/.well-known/pki-validation/EE68CD2D5671A412396D170983B45E85.txt', (req, res) => {
+  res.sendFile('/root/shippingRates/deliveryProfiles/EE68CD2D5671A412396D170983B45E85.txt')
 })
 
 app.get('/', (req, res) => {
