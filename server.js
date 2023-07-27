@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const express = require('express')
-const fs = requer('fs')
+const fs = requier('fs')
 const Shopify = require('shopify-api-node');
 
 const file = fs.readFileSync('./1F3CF813A0705AD831D96B21226847D7.txt')
