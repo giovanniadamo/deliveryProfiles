@@ -280,9 +280,9 @@ app.post('/create-shipping-method', async (req, res) => {
     shopify
     .graphql(query, variables)
     .then((profile) => {
-      console.log(profile)
+      console.log(profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones)
       if(profile.deliveryProfileUpdate.userErrors.length === 0){
-        let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges[0].node.methodDefinitions.edges.map(edge => edge.node)
+        let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges.map(edge => edge.node.methodDefinitions.edges)
         res.send(generalProfileShippingMethods)
       }else{
         res.send(profile)
