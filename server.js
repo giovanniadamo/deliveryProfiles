@@ -245,7 +245,7 @@ app.post('/get-profile-gids', async (req, res) => {
 app.post('/create-shipping-method', async (req, res) => {
   console.log('/create-shipping-profile', req.body)
   try{
-    const variables = req.body
+    const variables = req.body.data
     
     const query = `mutation deliveryProfileUpdate($id: ID!, $profile: DeliveryProfileInput!){
       deliveryProfileUpdate(id: $id, profile: $profile){
@@ -257,6 +257,9 @@ app.post('/create-shipping-method', async (req, res) => {
             locationGroupZones(first:16){
               edges{
                 node{
+                  zone{
+                    id
+                  },
                   methodDefinitions(first: 10 reverse:true){
                     edges{
                       node{
@@ -282,7 +285,12 @@ app.post('/create-shipping-method', async (req, res) => {
     .then((profile) => {
       console.log(profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones)
       if(profile.deliveryProfileUpdate.userErrors.length === 0){
-        let generalProfileShippingMethods = profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges.map(edge => edge.node.methodDefinitions.edges)
+        let generalProfileShippingMethods = []
+        profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.forEach(edge => {
+          if(edge.node.zone.id === req.body.locationGroupZoneToUpdate){
+            generalProfileShippingMethods.push(edge.node.methodDefinitions.edges)
+          }
+        })
         res.send(generalProfileShippingMethods)
       }else{
         res.send(profile)
