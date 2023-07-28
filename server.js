@@ -254,7 +254,7 @@ app.post('/create-shipping-method', async (req, res) => {
           name
           id
           profileLocationGroups{
-            locationGroupZones(first:1){
+            locationGroupZones(first:16){
               edges{
                 node{
                   methodDefinitions(first: 10 reverse:true){
