@@ -286,7 +286,7 @@ app.post('/create-shipping-method', async (req, res) => {
       console.log(profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones)
       if(profile.deliveryProfileUpdate.userErrors.length === 0){
         let generalProfileShippingMethods = []
-        profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.forEach(edge => {
+        profile.deliveryProfileUpdate.profile.profileLocationGroups[0].locationGroupZones.edges.forEach(edge => {
           if(edge.node.zone.id === req.body.locationGroupZoneToUpdate){
             generalProfileShippingMethods.push(edge.node.methodDefinitions.edges)
           }
