@@ -188,6 +188,7 @@ app.post('/get-profile-gids', async (req, res) => {
 
         groupZone.node.methodDefinitions.edges.forEach(async (edge) => {
           let profileDescription = edge.node.description
+          gids.methodsToDelete.push(edge.node.id)
   
           if(profileDescription && profileDescription.includes('-')){
             let destructuredDescription = profileDescription.split('-')
@@ -195,7 +196,6 @@ app.post('/get-profile-gids', async (req, res) => {
             let isOlder = await minuteDifference(givenDate);
   
             if(isOlder){
-              gids.methodsToDelete.push(edge.node.id)
             }
           }
         })
